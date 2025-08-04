@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .input-field {
+        @apply border border-sunu-border px-4 py-2 rounded-xl w-full text-sunu-dark focus:outline-none focus:ring-2 focus:ring-sunu-red;
+    }
+
+    .btn-primary {
+        @apply bg-sunu-red text-white font-semibold px-6 py-2 rounded-xl shadow hover:bg-sunu-accent transition duration-200;
+    }
+    .text-border {
+        -webkit-text-stroke: 1px #4c0e0e;
+
+    }
+}
