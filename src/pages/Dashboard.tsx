@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
             import '../index.css';
             import { useAuth } from '../context/AuthContext';
-            import { apiService } from '../services/api';
             import {
               CreditCard,
               Plus,
@@ -14,6 +13,14 @@ import React, { useState, useEffect } from 'react';
               Clock,
               Hash
             } from 'lucide-react';
+
+// Dans votre composant Login ou Dashboard
+import { apiService } from '../services/api';
+
+// Option 1 : Utiliser testConnection via apiService
+const handleTestConnection = async () => {
+  await apiService.testConnection();
+};
 
             interface Payment {
               id: number;
@@ -134,7 +141,7 @@ import React, { useState, useEffect } from 'react';
                 } catch (err: unknown) {
                   const errorMessage = err instanceof Error ? err.message :
                       typeof err === 'object' && err && 'response' in err ?
-                          (err as Record<string, any>).response?.data?.message :
+                          (err as Record<string, unknown>).response?.data?.message :
                           'Erreur lors de l\'enregistrement du paiement';
 
                   setError(errorMessage);
@@ -175,6 +182,9 @@ import React, { useState, useEffect } from 'react';
                       <h1 className="text-3xl font-bold text-sunu-red font-title p2 rounded text-border">
                         Interface Caissier
                       </h1>
+                      <button onClick={handleTestConnection}>
+                        Tester la connexion
+                      </button>
                       <p className="mt-2 text-sunu-gray-dark font-body">
                         Bonjour {user?.prenom} {user?.nom} - Enregistrement des paiements clients
                       </p>
