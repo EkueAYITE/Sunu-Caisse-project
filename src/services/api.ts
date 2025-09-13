@@ -119,18 +119,38 @@ createAdminUser: async () => {
 
   // Client endpoints
   getProfile: () => api.get('/profile'),
-  
-  getTransactions: (page = 1, limit = 10) =>
-    api.get('/transactions', { params: { page, limit } }),
-  
-  createTransaction: (data: {
-    type: 'credit' | 'debit' | 'payment';
+
+    getPaiements: async (page = 1, limit = 10) => {
+        const response = await api.get('/paiements', { params: { page, limit } });
+        // ✅ CORRECT : retourner directement response.data
+        return response.data;
+    },
+
+  createPaiement: async (paiementData: {
+    type: 'credit' | 'debit' | 'payment';  // ✅ Types valides selon backend
     montant: number;
-    description: string;
-  }) => api.post('/transactions', data),
-  
-  payCredit: (montant: number) =>
-    api.post('/pay-credit', { montant }),
+    nom_client: string;      // ✅ Requis par le backend
+    prenom_client: string;   // ✅ Requis par le backend
+    mode_paiement: 'espece' | 'cheque' | 'tpe' | 'virement';  // ✅ Requis
+    numero_police?: string;
+    numero_piece?: string;
+    montant_lettres?: string;
+    description?: string;
+  })  => {
+      try {
+          const response = await api.post('/paiements', {
+              ...paiementData,
+              nom: paiementData.nom_client, // Mapper nom_client vers nom
+              prenom: paiementData.prenom_client, // Mapper prenom_client vers prenom
+          });
+          return response;
+      } catch (error: unknown) {
+          if (axios.isAxiosError(error)) {
+              throw new Error(error.response?.data?.message || 'Erreur lors de la création du paiement');
+          }
+          throw error;
+      }
+  },
 
   // Admin endpoints
   getAllClients: () => api.get('/admin/clients'),

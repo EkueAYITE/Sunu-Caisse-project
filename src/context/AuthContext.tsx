@@ -26,7 +26,7 @@ interface RegisterData {
   nom: string;
   prenom: string;
   email: string;
-  password: string;
+  motDePasse: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -57,33 +57,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await apiService.login(email, password);
-      const { user: userData, token: userToken } = response.data;
-      
-      setUser(userData);
-      setToken(userToken);
-      localStorage.setItem('token', userToken);
-      localStorage.setItem('user', JSON.stringify(userData));
-      apiService.setAuthToken(userToken);
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.login(email, password);
+    const { user: userData, token: userToken } = response.data;
+
+    setUser(userData);
+    setToken(userToken);
+    localStorage.setItem('token', userToken);
+    localStorage.setItem('user', JSON.stringify(userData));
+    apiService.setAuthToken(userToken);
   };
 
   const register = async (userData: RegisterData) => {
-    try {
-      const response = await apiService.register(userData);
-      const { user: newUser, token: userToken } = response.data;
-      
-      setUser(newUser);
-      setToken(userToken);
-      localStorage.setItem('token', userToken);
-      localStorage.setItem('user', JSON.stringify(newUser));
-      apiService.setAuthToken(userToken);
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.register({
+      ...userData,
+      motDePasse: userData.motDePasse, // Ensure correct property name
+    });
+    const { user: newUser, token: userToken } = response.data;
+
+    setUser(newUser);
+    setToken(userToken);
+    localStorage.setItem('token', userToken);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    apiService.setAuthToken(userToken);
   };
 
   const logout = () => {
