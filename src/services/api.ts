@@ -112,10 +112,16 @@ createAdminUser: async () => {
   }
 },
    */
-  
-  logout: () => api.post('/auth/logout'),
-  
+    // Nouvelle méthode pour récupérer les paiements du caissier connecté
+    getMesPaiements: async (page = 1, limit = 10) => {
+        const response = await api.get(`/paiements/mes-paiements?page=${page}&limit=${limit}`);
+        return response.data;
+    },
+
+    logout: () => api.post('/auth/logout'),
+
   getCurrentUser: () => api.get('/user'),
+
 
   // Client endpoints
   getProfile: () => api.get('/profile'),
