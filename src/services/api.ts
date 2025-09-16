@@ -178,6 +178,31 @@ createAdminUser: async () => {
       delete api.defaults.headers.common['Authorization'];
     }
   },
+
+    // Dans api.ts, ajouter ces méthodes
+    getPaiementsByDate: async (date: string) => {
+      try {
+        const response = await api.get(`/admin/daily-report?date=${date}`);
+        return response;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          throw new Error(error.response?.data?.message || 'Erreur lors de la récupération des paiements');
+        }
+        throw error;
+      }
+    },
+
+    deleteClient: async (clientId: number, data: { justification: string }) => {
+      try {
+        const response = await api.delete(`/clients/${clientId}`, { data });
+        return response;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          throw new Error(error.response?.data?.message || 'Erreur lors de la suppression du client');
+        }
+        throw error;
+      }
+    },
 };
 
 export default api;
