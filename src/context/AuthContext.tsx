@@ -6,7 +6,7 @@ interface User {
   nom: string;
   prenom: string;
   email: string;
-  role: 'client' | 'admin';
+  role: 'client' | 'admin' | 'caissier';
   solde?: number;
 }
 

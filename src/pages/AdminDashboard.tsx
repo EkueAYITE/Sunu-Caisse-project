@@ -373,15 +373,17 @@ const AdminDashboard: React.FC = () => {
     setDeleteError('');
   };
 
-  const getClientStatusColor = (solde: number) => {
-    if (solde > 0) return 'text-green-600 bg-green-100';
-    if (solde < 0) return 'text-red-600 bg-red-100';
+  const getClientStatusColor = (solde: number | undefined) => {
+    const soldeValue = solde || 0;
+    if (soldeValue > 0) return 'text-green-600 bg-green-100';
+    if (soldeValue < 0) return 'text-red-600 bg-red-100';
     return 'text-gray-600 bg-gray-100';
   };
 
-  const getClientStatusIcon = (solde: number) => {
-    if (solde > 0) return <CheckCircle className="h-4 w-4" />;
-    if (solde < 0) return <AlertTriangle className="h-4 w-4" />;
+  const getClientStatusIcon = (solde: number | undefined) => {
+    const soldeValue = solde || 0;
+    if (soldeValue > 0) return <CheckCircle className="h-4 w-4" />;
+    if (soldeValue < 0) return <AlertTriangle className="h-4 w-4" />;
     return <DollarSign className="h-4 w-4" />;
   };
 
@@ -450,25 +452,25 @@ const AdminDashboard: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <StatCard
                     title="Total Clients"
-                    value={stats.totalClients.toLocaleString()}
+                    value={(stats.totalClients || 0).toLocaleString()}
                     icon={<Users className="h-6 w-6" />}
                     color="bg-blue-500"
                 />
                 <StatCard
                     title="Paiements Aujourd'hui"
-                    value={stats.paiementsAujourdhui}
+                    value={stats.paiementsAujourdhui || 0}
                     icon={<Activity className="h-6 w-6" />}
                     color="bg-green-500"
                 />
                 <StatCard
                     title="Montant Aujourd'hui"
-                    value={`${stats.montantAujourdhui.toLocaleString()} FCFA`}
+                    value={`${(stats.montantAujourdhui || 0).toLocaleString()} FCFA`}
                     icon={<DollarSign className="h-6 w-6" />}
                     color="bg-yellow-500"
                 />
                 <StatCard
                     title="Total Général"
-                    value={`${stats.montantTotal.toLocaleString()} FCFA`}
+                    value={`${(stats.montantTotal || 0).toLocaleString()} FCFA`}
                     icon={<CreditCard className="h-6 w-6" />}
                     color="bg-purple-500"
                 />
@@ -496,7 +498,7 @@ const AdminDashboard: React.FC = () => {
                             {payment.prenom} {payment.nom}
                           </td>
                           <td className="py-2 text-sm font-mono text-green-600">
-                            {payment.montant.toLocaleString()} FCFA
+                            {(payment.montant || 0).toLocaleString()} FCFA
                           </td>
                           <td className="py-2 text-sm text-sunu-gray-dark">
                             {payment.mode_paiement}
@@ -567,13 +569,13 @@ const AdminDashboard: React.FC = () => {
                           {client.email}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-sunu-gray-dark">
-                          {client.solde.toLocaleString()} FCFA
+                          {(client.solde || 0).toLocaleString()} FCFA
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getClientStatusColor(client.solde)}`}>
                                 {getClientStatusIcon(client.solde)}
                                 <span className="ml-1">
-                                  {client.solde > 0 ? 'Créditeur' : client.solde < 0 ? 'Débiteur' : 'Équilibré'}
+                                  {(client.solde || 0) > 0 ? 'Créditeur' : (client.solde || 0) < 0 ? 'Débiteur' : 'Équilibré'}
                                 </span>
                               </span>
                         </td>

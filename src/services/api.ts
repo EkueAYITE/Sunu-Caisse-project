@@ -120,7 +120,7 @@ createAdminUser: async () => {
 
     logout: () => api.post('/auth/logout'),
 
-  getCurrentUser: () => api.get('/user'),
+  getCurrentUser: () => api.get('/auth/me'),
 
 
   // Client endpoints
