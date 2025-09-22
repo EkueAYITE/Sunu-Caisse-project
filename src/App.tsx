@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
             import Register from './pages/Register';
             import Dashboard from './pages/Dashboard';
             import AdminDashboard from './pages/AdminDashboard';
+import SuperAdmin from "./pages/SuperAdmin.tsx";
 
             function App() {
               return (
@@ -35,6 +36,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
                               </ProtectedRoute>
                             }
                           />
+                            <Route
+                                path={"/super-admin-dashboard"}
+                                element={  <SuperAdmin />}
+                            />
                         </Routes>
                       </main>
                     </div>
